@@ -1,0 +1,15 @@
+{
+  "name": "marine-server",
+  "version": "0.0.1",
+  "description": "Marine Server",
+  "repository": "https://github.com/zhongzhi107/marine-server",
+  "license": "MIT",
+  "author": "Joe Zhong <zhong.zhi@163.com>",
+  "devDependencies": {
+    "koa": "0.18.1",
+    "koa-router": "4.2.0"
+  },
+  "engines": {
+    "node": "> 0.11.4"
+  }
+}
