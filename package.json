@@ -6,6 +6,8 @@
   "license": "MIT",
   "author": "Joe Zhong <zhong.zhi@163.com>",
   "devDependencies": {
+    "co-views": "^0.2.0",
+    "ejs": "^1.0.0",
     "koa": "0.18.1",
     "koa-router": "4.2.0"
   },
