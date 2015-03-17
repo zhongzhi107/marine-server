@@ -1,20 +1,71 @@
 var views = require('co-views');
 var app = require('koa')();
 var router = require('koa-router')();
+var logger = require('koa-logger');
+var compress = require('koa-compress');
+// var logger = require('koa-log4js');
 
-var PORT = 3001;
+var React = require('react');
+var assign = require('react/lib/Object.assign');
+
+var url = require('url');
+
+var PORT = 9001;
+
+var compressConfig = {
+  filter: function (content_type) {
+    return /text/i.test(content_type);
+  },
+  threshold: 2048,
+  flush: require('zlib').Z_SYNC_FLUSH
+};
+
+require('node-jsx').install({harmony: true});
+
 var render = views(__dirname + '/refs', { ext: 'ejs' });
 
-router.get('/', function *(next) {
-  // this.body = 'Hello world';
-  this.body = yield render('index', {
-    title: 'test',
-    description: 'xxx',
-    body: '<h1>Hello EJS</h1>'
+function getBodyHTML(page, props) {
+  var layout = null, child = null;
+  while ((layout = page.type.layout || (page.defaultProps && page.defaultProps.layout))) {
+    child = React.createElement(page, props, child);
+    page = layout;
+  }
+  return React.renderToStaticMarkup(
+    React.createElement(page, props, child)
+  );
+}
+
+function getTemplateData(filename, query) {
+  var page = require('./refs/components/pages/' + filename);
+  var props = require('./refs/config/queryStringParse')(query) || {};
+  return assign(page.meta, {
+    body: getBodyHTML(page, props)
+  });
+}
+
+var routers = require('./refs/config/urlrewrite');
+Object.keys(routers).forEach((key) => {
+  router.get(key, function *(next) {
+    //console.log(this.params.query);
+    this.body = yield render('index', getTemplateData(routers[key], this.params.query));
   });
 });
 
+router.get('/api/:action', function *(next) {
+  //console.log(url.parse(this.url, true));
+  this.body = this.params.action;
+});
+
+// router.get('/', function *(next) {
+//   this.body = yield render('index', getTemplateData('Index'));
+// });
+// router.get('/about', function *(next) {
+//   this.body = yield render('index', getTemplateData('About'));
+// });
+
 app
+  .use(compress(compressConfig))
+  .use(logger())
   .use(router.routes())
   .use(router.allowedMethods());
 
