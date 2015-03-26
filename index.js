@@ -20,7 +20,7 @@ var compressConfig = {
   flush: require('zlib').Z_SYNC_FLUSH
 };
 
-require('node-jsx').install({harmony: true});
+//require('node-jsx').install({harmony: true});
 
 var render = views(__dirname + '/refs', { ext: 'ejs' });
 
