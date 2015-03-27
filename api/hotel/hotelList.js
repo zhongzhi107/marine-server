@@ -8,6 +8,7 @@
  * self.status 设置状态码
  */
 module.exports = function(self) {
+  //throw new Error('aaaa');
   //self.redirect('/sign-in');
   //self.status = 301;
   //console.log(req);
