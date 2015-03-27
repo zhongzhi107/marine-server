@@ -46,14 +46,23 @@ function getTemplateData(filename, query) {
 var routers = require('./refs/config/urlrewrite');
 Object.keys(routers).forEach((key) => {
   router.get(key, function *(next) {
-    //console.log(this.params.query);
     this.body = yield render('index', getTemplateData(routers[key], this.params.query));
   });
 });
 
-router.get('/api/:action', function *(next) {
+router.all('/api/:module/:action', function *(next) {
+  var uri = url.parse(this.url, true);
   //console.log(url.parse(this.url, true));
-  this.body = this.params.action;
+  this.set('Content-Type', 'application/json;charset=utf-8');
+  //this.redirect('/sign-in');
+  //this.status = 301;
+  //this.body = JSON.stringify({action: this.params.action});//this.params.action;
+  try {
+    require('.' + uri.pathname)(this);
+  } catch (e) {
+    console.error(e);
+  }
+
 });
 
 // router.get('/', function *(next) {
