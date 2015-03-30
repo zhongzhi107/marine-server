@@ -10,8 +10,8 @@
     "ejs": "1.0.0",
     "koa": "0.18.1",
     "koa-compress": "1.0.8",
-    "koa-logger": "1.2.2",
     "koa-log4js": "0.0.1",
+    "koa-router": "4.2.0",
 
     "css-loader": "0.9.0",
     "flux": "2.0.1",
