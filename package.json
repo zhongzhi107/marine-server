@@ -7,7 +7,7 @@
   "author": "Joe Zhong <zhong.zhi@163.com>",
   "devDependencies": {
     "co-views": "0.2.0",
-    "ejs": "1.0.0",
+    "ejs": "2.5.7",
     "koa": "0.18.1",
     "koa-compress": "1.0.8",
     "koa-log4js": "0.0.1",
